@@ -1,0 +1,34 @@
+﻿<Properties StartupConfiguration="{DA5B6C64-3336-43FE-A830-FCC8CDF6EBD1}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Android/DDPClient.cs">
+    <Files>
+      <File FileName="IMeteor.cs" Line="21" Column="1" />
+      <File FileName="AbstractMeteor.cs" Line="39" Column="24" />
+      <File FileName="MeteorCollection.cs" Line="11" Column="21" />
+      <File FileName="Android/Meteor.cs" Line="4" Column="31" />
+      <File FileName="iOS/Meteor.cs" Line="7" Column="4" />
+      <File FileName="Android/DDPClient.cs" Line="11" Column="3" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="MeteorPCL" expanded="True">
+            <Node name="MeteorPCL" expanded="True" />
+            <Node name="MeteorPCL.Android" expanded="True">
+              <Node name="DDPClient.cs" selected="True" />
+            </Node>
+            <Node name="MeteorPCL.iOS" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.MeteorPCL.Android PreferredExecutionTarget="Android.ad47c2bf" />
+  <MonoDevelop.Ide.ItemProperties.MeteorPCL.iOS HideGettingStarted="True" />
+  <AuthorInfo Name="Shaun Campbell" Email="shaun.campbell@me.com" Copyright="(c) Shaun Campbell 2017" Company="" Trademark="" />
+  <MultiItemStartupConfigurations />
+</Properties>
