@@ -14,6 +14,7 @@ namespace MeteorPCL
 	/// </summary>
 	public interface IDataSubscriber
 	{
+		event MessageReceivedDelegate MessageReceived;
 		/// <summary>
 		/// Called when data is received.
 		/// </summary>

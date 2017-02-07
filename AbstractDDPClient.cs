@@ -17,6 +17,8 @@ namespace MeteorPCL
 		protected IResultQueue _queueHandler;
 		protected IDataSubscriber _subscriber;
 
+		public event MessageReceivedDelegate MessageReceived;
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:MeteorPCL.AbstractDDPClient"/> class.
 		/// </summary>
@@ -38,6 +40,14 @@ namespace MeteorPCL
 			this._connector = connector;
 			this._subscriber = subscriber;
 			this._queueHandler = queue;
+
+			_subscriber.MessageReceived += (msg) =>
+			{
+				if (MessageReceived != null)
+				{
+					MessageReceived(msg);
+				}
+			};
 		}
 
 		/// <summary>

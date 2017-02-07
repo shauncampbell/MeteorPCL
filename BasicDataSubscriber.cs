@@ -13,6 +13,8 @@ namespace MeteorPCL
 	{
 		private Dictionary<string, CallResult> _callbacks = new Dictionary<string, CallResult>();
 
+		public event MessageReceivedDelegate MessageReceived;
+
 		/// <summary>
 		/// Await the result of a particular message id.
 		/// </summary>
@@ -30,10 +32,14 @@ namespace MeteorPCL
 		public virtual void DataReceived(JObject data)
 		{
 			if (null != data["msg"] && "result".Equals(data["msg"].ToString()) &&
-			    null != data["id"] && _callbacks.ContainsKey(data["id"].ToString()))
+				null != data["id"] && _callbacks.ContainsKey(data["id"].ToString()))
 			{
 				_callbacks[data["id"].ToString()](data);
 				_callbacks.Remove(data["id"].ToString());
+			}
+			else if (MessageReceived != null)
+			{
+				MessageReceived(data);
 			}
 		}
 	}

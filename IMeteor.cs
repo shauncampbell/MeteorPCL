@@ -4,11 +4,15 @@ using Newtonsoft.Json.Linq;
 
 namespace MeteorPCL
 {
+	public delegate void MessageReceivedDelegate(JObject message);
+
 	/// <summary>
 	/// This is the main interface for an implementation of the Meteor client.
 	/// </summary>
 	public interface IMeteor
 	{
+		event MessageReceivedDelegate MessageReceived;
+
 		/// <summary>
 		/// Connect the specified host, ssl and token.
 		/// </summary>

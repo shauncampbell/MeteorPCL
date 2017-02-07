@@ -5,15 +5,25 @@ using Newtonsoft.Json.Linq;
 
 namespace MeteorPCL
 {
-	public class AbstractMeteor: IMeteor
+	public abstract class AbstractMeteor: IMeteor
 	{
 		private object[] NO_PARAMS = new object[] { };
 		private IDDPClient _client = null;
 		private string _host, _token;
 		private bool _ssl;
+
+		public event MessageReceivedDelegate MessageReceived;
+
 		public AbstractMeteor(IDDPClient client)
 		{
 			_client = client;
+			_client.MessageReceived += (message) =>
+			{
+				if (MessageReceived != null)
+				{
+					MessageReceived(message);
+				}
+			};
 		}
 
 		public IDataSubscriber Subscriber

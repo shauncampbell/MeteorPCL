@@ -9,6 +9,8 @@ namespace MeteorPCL
 	/// </summary>
 	public interface IDDPClient
 	{
+		event MessageReceivedDelegate MessageReceived;
+
 		/// <summary>
 		/// Connect to the DDP Service.
 		/// </summary>

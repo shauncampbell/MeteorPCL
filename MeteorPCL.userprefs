@@ -1,22 +1,20 @@
 ﻿<Properties StartupConfiguration="{DA5B6C64-3336-43FE-A830-FCC8CDF6EBD1}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Android/DDPClient.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="AbstractDDPClient.cs">
     <Files>
-      <File FileName="IMeteor.cs" Line="21" Column="1" />
-      <File FileName="AbstractMeteor.cs" Line="39" Column="24" />
-      <File FileName="MeteorCollection.cs" Line="11" Column="21" />
-      <File FileName="Android/Meteor.cs" Line="4" Column="31" />
-      <File FileName="iOS/Meteor.cs" Line="7" Column="4" />
-      <File FileName="Android/DDPClient.cs" Line="11" Column="3" />
+      <File FileName="IMeteor.cs" Line="15" Column="3" />
+      <File FileName="AbstractMeteor.cs" Line="22" Column="5" />
+      <File FileName="IDataSubscriber.cs" Line="15" Column="27" />
+      <File FileName="AbstractDDPClient.cs" Line="46" Column="19" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="MeteorPCL" expanded="True">
-            <Node name="MeteorPCL" expanded="True" />
-            <Node name="MeteorPCL.Android" expanded="True">
-              <Node name="DDPClient.cs" selected="True" />
+            <Node name="Solution Items" expanded="True" />
+            <Node name="MeteorPCL" expanded="True">
+              <Node name="AbstractDDPClient.cs" selected="True" />
             </Node>
-            <Node name="MeteorPCL.iOS" expanded="True" />
+            <Node name="MeteorPCL.Android" expanded="True" />
           </Node>
         </State>
       </Pad>
