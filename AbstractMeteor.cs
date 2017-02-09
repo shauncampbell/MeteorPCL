@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using PCLCrypto;
 
 namespace MeteorPCL
 {
-	public abstract class AbstractMeteor: IMeteor
+	public abstract class AbstractMeteor : IMeteor
 	{
 		private object[] NO_PARAMS = new object[] { };
 		private IDDPClient _client = null;
@@ -13,17 +16,47 @@ namespace MeteorPCL
 		private bool _ssl;
 
 		public event MessageReceivedDelegate MessageReceived;
+		public event ItemAddedEventArgs ItemAdded;
+		public event ItemUpdatedEventArgs ItemUpdated;
+		public event ItemDeletedEventArgs ItemDeleted;
 
 		public AbstractMeteor(IDDPClient client)
 		{
 			_client = client;
-			_client.MessageReceived += (message) =>
+			_client.MessageReceived += OnMessageReceived;
+		}
+
+		private void OnMessageReceived(JObject obj)
+		{
+			if (obj == null)
+				return;
+			Debug.WriteLine(obj);
+			if (obj["msg"] != null && obj["id"] != null && obj["collection"] != null && obj["fields"] != null)
 			{
-				if (MessageReceived != null)
+				var msg = obj["msg"].Value<string>();
+				var id = obj["id"].Value<string>();
+				var collection = obj["collection"].Value<string>();
+				var fields = obj["fields"] as JObject;
+
+				if ("added".Equals(msg) && ItemAdded != null)
 				{
-					MessageReceived(message);
+					ItemAdded(id, collection, fields);
 				}
-			};
+
+				if ("updated".Equals(msg) && ItemUpdated != null)
+				{
+					ItemUpdated(id, collection, fields);
+				}
+
+				if ("removed".Equals(msg) && ItemDeleted != null)
+				{
+					ItemDeleted(id, collection);
+				}
+			}
+			else if (MessageReceived != null)
+			{
+				MessageReceived(obj);
+			}
 		}
 
 		public IDataSubscriber Subscriber
@@ -50,10 +83,10 @@ namespace MeteorPCL
 		{
 			_client.Connect(_host, _ssl);
 
-			return CallWithResult("login", new object[] { 
-				new Dictionary<string, object>() { 
+			return CallWithResult("login", new object[] {
+				new Dictionary<string, object>() {
 					{ "resume", _token }
-				} 
+				}
 			});
 		}
 
@@ -64,13 +97,38 @@ namespace MeteorPCL
 		/// <param name="host">Host.</param>
 		/// <param name="ssl">If set to <c>true</c> connect using ssl.</param>
 		/// <param name="token">Token.</param>
-		public Task<JObject> Connect(string host, bool ssl, string token)
+		public void Connect(string host, bool ssl)
 		{
 			_host = host;
-			_token = token;
 			_ssl = ssl;
 
-			return Resume();
+			_client.Connect(_host, _ssl);
+		}
+
+		public Task<JObject> Login(Dictionary<string, object> parameters)
+		{
+			return CallWithResult("login", new object[] { parameters });
+		}
+
+		public Task<JObject> LoginWithUsernameAndPassword(string username, string password)
+		{
+			byte[] data = Encoding.UTF8.GetBytes(password);
+			var hasher = WinRTCrypto.HashAlgorithmProvider.OpenAlgorithm(HashAlgorithm.Sha256);
+			byte[] hash = hasher.HashData(data);
+			string passwordSha = Convert.ToBase64String(hash);
+
+			Dictionary<string, object> parameters = new Dictionary<string, object>() {
+				{ "user", new Dictionary<string, object>() { { "username", username } } },
+				{ "password", new Dictionary<string, object>() { { "digest", passwordSha }, {"algorithm", "sha-256" } } } };
+
+			return Login(parameters);
+		}
+
+		public Task<JObject> LoginWithToken(string token)
+		{
+			Dictionary<string, object> parameters = new Dictionary<string, object>() { { "resume", token } };
+
+			return Login(parameters);
 		}
 
 		/// <summary>
@@ -79,9 +137,9 @@ namespace MeteorPCL
 		/// <returns>The subscription task.</returns>
 		/// <param name="subscriptionName">Collection name.</param>
 		/// <param name="parameters">Parameters.</param>
-		public void Subscribe(string subscriptionName, object[] parameters)
+		public Task<JObject> Subscribe(string subscriptionName, object[] parameters)
 		{
-			 _client.Subscribe(subscriptionName, parameters);
+			return _client.Subscribe(subscriptionName, parameters);
 		}
 
 		/// <summary>
@@ -89,9 +147,9 @@ namespace MeteorPCL
 		/// </summary>
 		/// <returns>The subscription task.</returns>
 		/// <param name="subscriptionName">Collection name.</param>
-		public void Subscribe(string subscriptionName)
+		public Task<JObject> Subscribe(string subscriptionName)
 		{
-			Subscribe(subscriptionName, NO_PARAMS);
+			return Subscribe(subscriptionName, NO_PARAMS);
 		}
 
 		/// <summary>
@@ -143,5 +201,6 @@ namespace MeteorPCL
 		{
 			_client.Disconnect();
 		}
+
 	}
 }

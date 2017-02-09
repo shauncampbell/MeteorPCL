@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <version>1.0.1</version>
+    <version>1.0.5</version>
     <authors>Shaun Campbell</authors>
     <owners>Shaun Campbell</owners>
     <licenseUrl>https://github.com/shauncampbell/MeteorPCL/COPYING</licenseUrl>
@@ -12,6 +12,9 @@
     <description>Connect to MeteorJS services</description>
     <copyright>Copyright Shaun Campbell © 2017</copyright>
     <dependencies>
+    <group targetFramework="portable45-net45+win8+wpa81+MonoAndroid403+xamarinios10">
+	    <dependency id="PCLCrypto" version="2.0.147" />
+	  </group>
       <group targetFramework="portable45-net45+win8+wpa81">
 	    <dependency id="Newtonsoft.Json" version="9.0.1" />
 	  </group>

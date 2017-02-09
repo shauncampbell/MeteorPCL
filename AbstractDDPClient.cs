@@ -153,17 +153,38 @@ namespace MeteorPCL
 		/// <returns>The unique subscription ID</returns>
 		/// <param name="subscribeTo">The stream to subscribe to</param>
 		/// <param name="args">Any arguments required to subscribe</param>
-		public int Subscribe(string subscribeTo, params object[] args)
+		public Task<JObject> Subscribe(string subscribeTo, params object[] args)
 		{
-			_connector.Send(JsonConvert.SerializeObject(new
+			var task = new Task<JObject>(() =>
 			{
-				msg = "sub",
-				name = subscribeTo,
-				@params = args,
-				id = this.NextId().ToString()
-			}
-			));
-			return this.GetCurrentRequestId();
+				JObject result = null;
+				var id = this.NextId().ToString();
+				_subscriber.AwaitResult(id, (response) =>
+				{
+					result = response;
+				});
+
+				_connector.Send(JsonConvert.SerializeObject(new
+				{
+					msg = "sub",
+					name = subscribeTo,
+					@params = args,
+					id = id
+				}
+				));
+
+				while (result == null)
+				{
+					//	Give up the stream for a wee bit.
+					Sleep(10);
+				}
+
+				return result;
+			});
+
+			task.Start();
+			return task;
+			                             
 		}
 
 		/// <summary>

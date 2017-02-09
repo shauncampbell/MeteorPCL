@@ -1,31 +1,20 @@
 ﻿<Properties StartupConfiguration="{DA5B6C64-3336-43FE-A830-FCC8CDF6EBD1}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="AbstractDDPClient.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="AbstractMeteor.cs">
     <Files>
-      <File FileName="IMeteor.cs" Line="15" Column="3" />
-      <File FileName="AbstractMeteor.cs" Line="22" Column="5" />
+      <File FileName="IMeteor.cs" Line="66" Column="16" />
+      <File FileName="AbstractMeteor.cs" Line="151" Column="4" />
       <File FileName="IDataSubscriber.cs" Line="15" Column="27" />
-      <File FileName="AbstractDDPClient.cs" Line="46" Column="19" />
+      <File FileName="AbstractDDPClient.cs" Line="13" Column="45" />
+      <File FileName="MeteorPCL.nuspec" Line="4" Column="19" />
+      <File FileName="IDDPClient.cs" Line="50" Column="3" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="MeteorPCL" expanded="True">
-            <Node name="Solution Items" expanded="True" />
-            <Node name="MeteorPCL" expanded="True">
-              <Node name="AbstractDDPClient.cs" selected="True" />
-            </Node>
-            <Node name="MeteorPCL.Android" expanded="True" />
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.MeteorPCL.Android PreferredExecutionTarget="Android.ad47c2bf" />
+  <MonoDevelop.Ide.ItemProperties.MeteorPCL.Android PreferredExecutionTarget="Android.Android_23" />
   <MonoDevelop.Ide.ItemProperties.MeteorPCL.iOS HideGettingStarted="True" />
   <AuthorInfo Name="Shaun Campbell" Email="shaun.campbell@me.com" Copyright="(c) Shaun Campbell 2017" Company="" Trademark="" />
   <MultiItemStartupConfigurations />

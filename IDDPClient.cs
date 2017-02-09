@@ -47,7 +47,7 @@ namespace MeteorPCL
 		/// <returns>The unique subscription ID</returns>
 		/// <param name="methodName">The stream to subscribe to</param>
 		/// <param name="args">Any arguments required to subscribe</param>
-		int Subscribe(string methodName, object[] args);
+		Task<JObject> Subscribe(string methodName, object[] args);
 
 		/// <summary>
 		/// Gets the current request identifier.
