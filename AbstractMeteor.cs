@@ -43,7 +43,7 @@ namespace MeteorPCL
 					ItemAdded(id, collection, fields);
 				}
 
-				if ("updated".Equals(msg) && ItemUpdated != null)
+				if ("changed".Equals(msg) && ItemUpdated != null)
 				{
 					ItemUpdated(id, collection, fields);
 				}
