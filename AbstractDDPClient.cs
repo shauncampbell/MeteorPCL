@@ -159,7 +159,7 @@ namespace MeteorPCL
 			{
 				JObject result = null;
 				var id = this.NextId().ToString();
-				_subscriber.AwaitResult(id, (response) =>
+				_subscriber.AwaitSubscription(id, (response) =>
 				{
 					result = response;
 				});

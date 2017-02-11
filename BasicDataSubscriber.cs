@@ -12,6 +12,7 @@ namespace MeteorPCL
 	public class BasicDataSubscriber : IDataSubscriber
 	{
 		private Dictionary<string, CallResult> _callbacks = new Dictionary<string, CallResult>();
+		private Dictionary<string, CallResult> _subscriptions = new Dictionary<string, CallResult>();
 
 		public event MessageReceivedDelegate MessageReceived;
 
@@ -25,6 +26,11 @@ namespace MeteorPCL
 			_callbacks.Add(id, callback);
 		}
 
+		public void AwaitSubscription(string id, CallResult callback)
+		{
+			_subscriptions.Add(id, callback);
+		}
+
 		/// <summary>
 		/// Called when data is received.
 		/// </summary>
@@ -36,6 +42,19 @@ namespace MeteorPCL
 			{
 				_callbacks[data["id"].ToString()](data);
 				_callbacks.Remove(data["id"].ToString());
+			}
+			else if (null != data["msg"] && "ready".Equals(data["msg"].ToString()) &&
+					 null != data["subs"] && data["subs"] is JArray)
+			{
+				foreach (var id in data["subs"] as JArray)
+				{
+					var idString = id.Value<string>();
+					if (_subscriptions.ContainsKey(idString))
+					{
+						_subscriptions[idString](data);
+						_subscriptions.Remove(idString);
+					}
+				}
 			}
 			else if (MessageReceived != null)
 			{

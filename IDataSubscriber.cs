@@ -27,5 +27,12 @@ namespace MeteorPCL
 		/// <param name="id">Identifier.</param>
 		/// <param name="callback">Callback.</param>
 		void AwaitResult(string id, CallResult callback);
+
+		/// <summary>
+		/// Awaits the subscription.
+		/// </summary>
+		/// <param name="id">Identifier.</param>
+		/// <param name="callback">Callback.</param>
+		void AwaitSubscription(string id, CallResult callback);
 	}
 }
