@@ -106,38 +106,32 @@ namespace MeteorPCL
 		/// <returns>Task with the result.</returns>
 		/// <param name="methodName">Method name.</param>
 		/// <param name="args">Arguments.</param>
-		public Task<JObject> CallWithResult(string methodName, object[] args)
+		public async Task<JObject> CallWithResult(string methodName, object[] args)
 		{
-			var task = new Task<JObject>(() =>
+			var newId = this.NextId().ToString();
+			var obj = JsonConvert.SerializeObject(new
 			{
-				var newId = this.NextId().ToString();
-				var obj = JsonConvert.SerializeObject(new
-				{
-					msg = "method",
-					method = methodName,
-					@params = args,
-					id = newId
-				});
-
-				JObject result = null;
-
-				_subscriber.AwaitResult(newId, (response) =>
-				{
-					result = response;
-				});
-				_connector.Send(obj);
-
-				while (result == null)
-				{
-					//	Give up the stream for a wee bit.
-					Sleep(10);
-				}
-
-				return result;
+				msg = "method",
+				method = methodName,
+				@params = args,
+				id = newId
 			});
 
-			task.Start();
-			return task;
+			JObject result = null;
+
+			_subscriber.AwaitResult(newId, (response) =>
+			{
+				result = response;
+			});
+			_connector.Send(obj);
+
+			while (result == null)
+			{
+				//	Give up the stream for a wee bit.
+				await Task.Delay(100);
+			}
+
+			return result;
 		}
 
 		/// <summary>
@@ -153,37 +147,31 @@ namespace MeteorPCL
 		/// <returns>The unique subscription ID</returns>
 		/// <param name="subscribeTo">The stream to subscribe to</param>
 		/// <param name="args">Any arguments required to subscribe</param>
-		public Task<JObject> Subscribe(string subscribeTo, params object[] args)
+		public async Task<JObject> Subscribe(string subscribeTo, params object[] args)
 		{
-			var task = new Task<JObject>(() =>
+			JObject result = null;
+			var id = this.NextId().ToString();
+			_subscriber.AwaitSubscription(id, (response) =>
 			{
-				JObject result = null;
-				var id = this.NextId().ToString();
-				_subscriber.AwaitSubscription(id, (response) =>
-				{
-					result = response;
-				});
-
-				_connector.Send(JsonConvert.SerializeObject(new
-				{
-					msg = "sub",
-					name = subscribeTo,
-					@params = args,
-					id = id
-				}
-				));
-
-				while (result == null)
-				{
-					//	Give up the stream for a wee bit.
-					Sleep(10);
-				}
-
-				return result;
+				result = response;
 			});
 
-			task.Start();
-			return task;
+			_connector.Send(JsonConvert.SerializeObject(new
+			{
+				msg = "sub",
+				name = subscribeTo,
+				@params = args,
+				id = id
+			}
+			));
+
+			while (result == null)
+			{
+				//	Give up the stream for a wee bit.
+				await Task.Delay(100);
+			}
+
+			return result;
 			                             
 		}
 
